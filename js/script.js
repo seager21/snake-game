@@ -84,7 +84,14 @@ function clearBoard() {
 }
 
 function moveSnake() {
-    const head = { x: snake[0].x + dx, y: snake[0].y + dy };
+    let head = { x: snake[0].x + dx, y: snake[0].y + dy };
+
+    // Wrap around the borders
+    if (head.x < 0) head.x = canvasSize - gridSize; // Left border
+    if (head.x >= canvasSize) head.x = 0;          // Right border
+    if (head.y < 0) head.y = canvasSize - gridSize; // Top border
+    if (head.y >= canvasSize) head.y = 0;          // Bottom border
+
     snake.unshift(head);
 
     if (head.x === food.x && head.y === food.y) {
@@ -99,11 +106,7 @@ function moveSnake() {
 function checkCollisions() {
     const head = snake[0];
 
-    if (head.x < 0 || head.x >= canvasSize || head.y < 0 || head.y >= canvasSize) {
-        gameOver = true;
-        endGame();
-    }
-
+    // Check collision with the snake itself
     for (let i = 1; i < snake.length; i++) {
         if (head.x === snake[i].x && head.y === snake[i].y) {
             gameOver = true;
