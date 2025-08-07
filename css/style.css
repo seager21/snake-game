@@ -521,58 +521,368 @@ body {
     margin-top: 30px;
 }
 
-/* Responsive Design */
+/* Mobile Touch Controls */
+.mobile-controls {
+    position: absolute;
+    bottom: 120px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: none;
+    z-index: 4;
+}
+
+.mobile-controls.active {
+    display: flex;
+}
+
+.touch-pad {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    border: 2px solid var(--neon-cyan);
+    border-radius: 50%;
+    background: rgba(0, 245, 255, 0.1);
+    box-shadow: 0 0 20px rgba(0, 245, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.touch-center {
+    width: 30px;
+    height: 30px;
+    background: var(--neon-cyan);
+    border-radius: 50%;
+    box-shadow: 0 0 15px var(--neon-cyan);
+}
+
+.directional-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 5px;
+    width: 150px;
+    height: 150px;
+    margin: 0 20px;
+}
+
+.dir-btn {
+    background: transparent;
+    border: 2px solid var(--neon-purple);
+    color: var(--neon-purple);
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 0 10px rgba(131, 56, 236, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+}
+
+.dir-btn:active {
+    background: var(--neon-purple);
+    color: var(--dark-bg);
+    box-shadow: 0 0 20px var(--neon-purple);
+    transform: scale(0.95);
+}
+
+.dir-btn.center {
+    background: rgba(131, 56, 236, 0.2);
+    border-color: var(--neon-yellow);
+    color: var(--neon-yellow);
+    font-size: 0.8rem;
+}
+
+/* Mobile Layout Optimizations */
 @media (max-width: 768px) {
+    body {
+        overflow-x: hidden;
+    }
+    
     .neon-text {
         font-size: 2.5rem;
+        line-height: 1.2;
     }
     
     .neon-text.secondary {
         font-size: 2rem;
+        line-height: 1.2;
+    }
+    
+    .subtitle {
+        font-size: 0.9rem;
+        line-height: 1.4;
     }
     
     .color-selector {
         grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .color-btn {
+        min-width: 160px;
+        justify-content: center;
     }
     
     .setup-buttons {
         flex-direction: column;
         align-items: center;
+        gap: 1rem;
     }
     
     .game-info {
-        gap: 20px;
+        gap: 15px;
         flex-wrap: wrap;
         justify-content: center;
+        padding: 0 10px;
+    }
+    
+    .score-display, .level-display, .high-score-display {
+        min-width: 80px;
     }
     
     .game-controls {
         flex-direction: column;
         gap: 10px;
+        padding: 0 20px;
+    }
+    
+    .controls-info {
+        font-size: 0.8rem;
+        text-align: center;
     }
     
     .modal-buttons {
         flex-direction: column;
         align-items: center;
+        gap: 15px;
+    }
+    
+    .modal-content {
+        padding: 30px 20px;
+        margin: 20px;
+    }
+    
+    .setup-container {
+        padding: 0 20px;
+    }
+    
+    .highscores-container {
+        padding: 0 20px;
+    }
+    
+    .score-entry {
+        grid-template-columns: 50px 1fr 80px;
+        padding: 12px 15px;
+        font-size: 1rem;
+    }
+    
+    /* Touch-friendly buttons */
+    .neon-button {
+        min-height: 50px;
+        padding: 15px 25px;
+        font-size: 1.1rem;
+        touch-action: manipulation;
+    }
+    
+    .level-btn {
+        min-height: 48px;
+        min-width: 48px;
+        touch-action: manipulation;
+    }
+    
+    /* Canvas sizing for mobile */
+    #game-board {
+        max-width: calc(100vw - 40px);
+        max-height: calc(100vh - 200px);
+        width: 90vmin;
+        height: 90vmin;
+    }
+    
+    /* Show mobile controls */
+    .mobile-controls {
+        display: flex;
     }
 }
 
 @media (max-width: 480px) {
     .neon-text {
-        font-size: 2rem;
+        font-size: 1.8rem;
+        letter-spacing: 0.1em;
     }
     
     .neon-text.secondary {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
+        letter-spacing: 0.1em;
+    }
+    
+    .subtitle {
+        font-size: 0.8rem;
+        margin-top: 0.5rem;
     }
     
     .level-selector {
-        gap: 5px;
+        gap: 3px;
+        justify-content: center;
     }
     
     .level-btn {
-        width: 40px;
-        height: 40px;
-        font-size: 1rem;
+        width: 35px;
+        height: 35px;
+        font-size: 0.9rem;
+        min-width: 35px;
+        min-height: 35px;
+    }
+    
+    .setup-section {
+        margin-bottom: 2rem;
+    }
+    
+    .setup-label {
+        font-size: 0.9rem;
+        margin-bottom: 0.8rem;
+    }
+    
+    .color-btn {
+        min-width: 140px;
+        font-size: 0.8rem;
+        padding: 10px 15px;
+    }
+    
+    .color-preview {
+        width: 16px;
+        height: 16px;
+    }
+    
+    .game-info {
+        gap: 10px;
+        scale: 0.9;
+    }
+    
+    .score-display .value, .level-display .value, .high-score-display .value {
+        font-size: 1.2rem;
+    }
+    
+    .score-display .label, .level-display .label, .high-score-display .label {
+        font-size: 0.7rem;
+    }
+    
+    .final-score .value {
+        font-size: 2.5rem;
+    }
+    
+    .game-controls {
+        bottom: 10px;
+        gap: 8px;
+    }
+    
+    .neon-button.small {
+        font-size: 0.8rem;
+        padding: 8px 16px;
+        min-height: 40px;
+    }
+    
+    /* Smaller canvas for very small screens */
+    #game-board {
+        width: 85vmin;
+        height: 85vmin;
+        max-width: calc(100vw - 20px);
+        max-height: calc(100vh - 180px);
+    }
+    
+    /* Adjust mobile controls for small screens */
+    .mobile-controls {
+        bottom: 80px;
+        scale: 0.8;
+    }
+    
+    .directional-buttons {
+        width: 120px;
+        height: 120px;
+        margin: 0 15px;
+    }
+    
+    .touch-pad {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .touch-center {
+        width: 25px;
+        height: 25px;
+    }
+}
+
+/* Landscape mobile optimization */
+@media (max-width: 896px) and (orientation: landscape) and (max-height: 500px) {
+    .game-header {
+        top: 10px;
+        scale: 0.8;
+    }
+    
+    .game-controls {
+        bottom: 10px;
+        scale: 0.8;
+    }
+    
+    .mobile-controls {
+        bottom: 50px;
+        scale: 0.7;
+    }
+    
+    #game-board {
+        width: 80vmin;
+        height: 80vmin;
+        max-height: calc(100vh - 120px);
+    }
+    
+    .neon-text {
+        font-size: 1.6rem;
+    }
+    
+    .neon-text.secondary {
+        font-size: 1.3rem;
+    }
+    
+    .setup-container, .highscores-container {
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    #game-board {
+        image-rendering: pixelated;
+        image-rendering: -moz-crisp-edges;
+        image-rendering: crisp-edges;
+    }
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .grid-background {
+        animation: none;
+    }
+    
+    .stars::before {
+        animation: none;
+    }
+    
+    .neon-text {
+        animation: none;
+    }
+    
+    .color-preview.rainbow {
+        animation: none;
+        background: linear-gradient(45deg, #ff006e, #00f5ff, #ffbe0b);
+    }
+    
+    .new-high-score {
+        animation: none;
     }
 }

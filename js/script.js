@@ -4,11 +4,10 @@ class VaporSnake {
         this.canvas = document.getElementById('game-board');
         this.ctx = this.canvas.getContext('2d');
         this.gridSize = 20;
-        this.canvasSize = 600;
         
-        // Set canvas size
-        this.canvas.width = this.canvasSize;
-        this.canvas.height = this.canvasSize;
+        // Responsive canvas sizing
+        this.setCanvasSize();
+        window.addEventListener('resize', () => this.setCanvasSize());
         
         // Game state
         this.gameState = 'menu'; // menu, playing, paused, gameOver
@@ -35,12 +34,191 @@ class VaporSnake {
         this.highScore = this.loadHighScore();
         this.updateHighScoreDisplay();
         
+        // Mobile detection
+        this.isMobile = this.detectMobile();
+        
         this.init();
+    }
+    
+    setCanvasSize() {
+        const isMobile = window.innerWidth <= 768;
+        let size;
+        
+        if (isMobile) {
+            // Mobile sizing
+            const maxSize = Math.min(window.innerWidth - 40, window.innerHeight - 250);
+            size = Math.floor(maxSize / this.gridSize) * this.gridSize;
+            size = Math.max(size, 320); // Minimum size
+            size = Math.min(size, 500); // Maximum size for mobile
+        } else {
+            // Desktop sizing
+            size = 600;
+        }
+        
+        this.canvasSize = size;
+        this.canvas.width = size;
+        this.canvas.height = size;
+        
+        // Update canvas style for crisp rendering
+        this.canvas.style.width = size + 'px';
+        this.canvas.style.height = size + 'px';
+        
+        // High DPI support
+        const devicePixelRatio = window.devicePixelRatio || 1;
+        if (devicePixelRatio > 1) {
+            this.canvas.width = size * devicePixelRatio;
+            this.canvas.height = size * devicePixelRatio;
+            this.ctx.scale(devicePixelRatio, devicePixelRatio);
+        }
     }
     
     init() {
         this.setupEventListeners();
+        this.setupMobileControls();
         this.updatePersonalBest();
+        this.adjustForMobile();
+    }
+    
+    detectMobile() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+               (navigator.maxTouchPoints && navigator.maxTouchPoints > 1) ||
+               window.innerWidth <= 768;
+    }
+    
+    adjustForMobile() {
+        if (this.isMobile) {
+            // Show mobile controls during game
+            document.getElementById('mobile-controls').classList.add('active');
+            
+            // Update controls info text
+            const controlsInfo = document.querySelector('.controls-info span');
+            if (controlsInfo) {
+                controlsInfo.textContent = 'Use touch controls below';
+            }
+            
+            // Adjust canvas size for mobile
+            const canvas = document.getElementById('game-board');
+            const container = document.querySelector('.game-container');
+            
+            // Prevent zoom on mobile
+            document.addEventListener('touchstart', (e) => {
+                if (e.touches.length > 1) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
+            
+            // Prevent double-tap zoom
+            let lastTouchEnd = 0;
+            document.addEventListener('touchend', (e) => {
+                const now = (new Date()).getTime();
+                if (now - lastTouchEnd <= 300) {
+                    e.preventDefault();
+                }
+                lastTouchEnd = now;
+            }, false);
+        }
+    }
+    
+    setupMobileControls() {
+        if (!this.isMobile) return;
+        
+        // Touch pad controls
+        const touchPad = document.getElementById('touch-pad');
+        let startX, startY, currentX, currentY;
+        
+        touchPad.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const rect = touchPad.getBoundingClientRect();
+            startX = touch.clientX - rect.left - rect.width / 2;
+            startY = touch.clientY - rect.top - rect.height / 2;
+        }, { passive: false });
+        
+        touchPad.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const rect = touchPad.getBoundingClientRect();
+            currentX = touch.clientX - rect.left - rect.width / 2;
+            currentY = touch.clientY - rect.top - rect.height / 2;
+        }, { passive: false });
+        
+        touchPad.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            if (!startX || !startY) return;
+            
+            const deltaX = currentX - startX;
+            const deltaY = currentY - startY;
+            const threshold = 20;
+            
+            if (Math.abs(deltaX) > Math.abs(deltaY)) {
+                // Horizontal movement
+                if (Math.abs(deltaX) > threshold) {
+                    this.handleMobileDirection(deltaX > 0 ? 'right' : 'left');
+                }
+            } else {
+                // Vertical movement
+                if (Math.abs(deltaY) > threshold) {
+                    this.handleMobileDirection(deltaY > 0 ? 'down' : 'up');
+                }
+            }
+            
+            startX = startY = currentX = currentY = null;
+        }, { passive: false });
+        
+        // Directional buttons
+        document.querySelectorAll('.dir-btn[data-direction]').forEach(btn => {
+            btn.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                const direction = btn.dataset.direction;
+                this.handleMobileDirection(direction);
+                
+                // Visual feedback
+                btn.style.transform = 'scale(0.9)';
+                setTimeout(() => {
+                    btn.style.transform = '';
+                }, 150);
+            }, { passive: false });
+            
+            // Also handle click for testing on desktop
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const direction = btn.dataset.direction;
+                this.handleMobileDirection(direction);
+            });
+        });
+    }
+    
+    handleMobileDirection(direction) {
+        if (this.gameState !== 'playing' || this.changingDirection) return;
+        
+        this.changingDirection = true;
+        
+        switch (direction) {
+            case 'left':
+                if (this.dx === 0) {
+                    this.dx = -this.gridSize;
+                    this.dy = 0;
+                }
+                break;
+            case 'up':
+                if (this.dy === 0) {
+                    this.dx = 0;
+                    this.dy = -this.gridSize;
+                }
+                break;
+            case 'right':
+                if (this.dx === 0) {
+                    this.dx = this.gridSize;
+                    this.dy = 0;
+                }
+                break;
+            case 'down':
+                if (this.dy === 0) {
+                    this.dx = 0;
+                    this.dy = this.gridSize;
+                }
+                break;
+        }
     }
     
     setupEventListeners() {

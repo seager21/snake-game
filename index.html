@@ -2,7 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#0f0514">
     <title>V A P O R  S N A K E</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
@@ -173,6 +177,34 @@
             <button class="neon-button small secondary" onclick="showMainMenu()">
                 <i class="fas fa-home"></i> MENU
             </button>
+        </div>
+        
+        <!-- Mobile Touch Controls -->
+        <div id="mobile-controls" class="mobile-controls">
+            <div class="touch-pad" id="touch-pad">
+                <div class="touch-center"></div>
+            </div>
+            <div class="directional-buttons">
+                <div></div>
+                <button class="dir-btn" data-direction="up">
+                    <i class="fas fa-chevron-up"></i>
+                </button>
+                <div></div>
+                <button class="dir-btn" data-direction="left">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="dir-btn center" onclick="pauseGame()">
+                    PAUSE
+                </button>
+                <button class="dir-btn" data-direction="right">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                <div></div>
+                <button class="dir-btn" data-direction="down">
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div></div>
+            </div>
         </div>
     </div>
     
