@@ -1,0 +1,24 @@
+{
+  "name": "Vaporwave Snake",
+  "short_name": "VaporSnake",
+  "description": "A retro/vaporwave themed Snake game with enhanced features",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f0514",
+  "theme_color": "#ff006e",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiBmaWxsPSIjMGYwNTE0Ii8+CjxyZWN0IHg9IjIwIiB5PSI4MCIgd2lkdGg9IjIwIiBoZWlnaHQ9IjIwIiBmaWxsPSIjZmYwMDZlIi8+CjxyZWN0IHg9IjQwIiB5PSI4MCIgd2lkdGg9IjIwIiBoZWlnaHQ9IjIwIiBmaWxsPSIjZmYwMDZlIi8+CjxyZWN0IHg9IjYwIiB5PSI4MCIgd2lkdGg9IjIwIiBoZWlnaHQ9IjIwIiBmaWxsPSIjZmYwMDZlIi8+CjxyZWN0IHg9IjgwIiB5PSI4MCIgd2lkdGg9IjIwIiBoZWlnaHQ9IjIwIiBmaWxsPSIjY2MwMDU1Ii8+CjxyZWN0IHg9IjEwMCIgeT0iODAiIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0iI2NjMDA1NSIvPgo8cmVjdCB4PSIxMjAiIHk9IjgwIiB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIGZpbGw9IiNjYzAwNTUiLz4KPGNpcmNsZSBjeD0iMTUwIiBjeT0iNjAiIHI9IjEwIiBmaWxsPSIjZmZiZTBiIi8+Cjx0ZXh0IHg9IjE2IiB5PSIxNDAiIGZvbnQtZmFtaWx5PSJPcmJpdHJvbiIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzAwZjVmZiI+VkFQT1I8L3RleHQ+Cjx0ZXh0IHg9IjE2IiB5PSIxNjAiIGZvbnQtZmFtaWx5PSJPcmJpdHJvbiIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzAwZjVmZiI+U05BS0U8L3RleHQ+Cjwvc3ZnPgo=",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiBmaWxsPSIjMGYwNTE0Ii8+CjxyZWN0IHg9IjQwIiB5PSIyMDAiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgZmlsbD0iI2ZmMDA2ZSIvPgo8cmVjdCB4PSI4MCIgeT0iMjAwIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIGZpbGw9IiNmZjAwNmUiLz4KPHJlY3QgeD0iMTIwIiB5PSIyMDAiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgZmlsbD0iI2ZmMDA2ZSIvPgo8cmVjdCB4PSIxNjAiIHk9IjIwMCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjY2MwMDU1Ii8+CjxyZWN0IHg9IjIwMCIgeT0iMjAwIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIGZpbGw9IiNjYzAwNTUiLz4KPHJlY3QgeD0iMjQwIiB5PSIyMDAiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgZmlsbD0iI2NjMDA1NSIvPgo8Y2lyY2xlIGN4PSIzMjAiIGN5PSIxNjAiIHI9IjIwIiBmaWxsPSIjZmZiZTBiIi8+Cjx0ZXh0IHg9IjQwIiB5PSIzNDAiIGZvbnQtZmFtaWx5PSJPcmJpdHJvbiIgZm9udC1zaXplPSI0OCIgZmlsbD0iIzAwZjVmZiI+VkFQT1I8L3RleHQ+Cjx0ZXh0IHg9IjQwIiB5PSIzODAiIGZvbnQtZmFtaWx5PSJPcmJpdHJvbiIgZm9udC1zaXplPSIzNiIgZmlsbD0iIzAwZjVmZiI+U05BS0U8L3RleHQ+Cjwvc3ZnPgo=",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ],
+  "categories": ["games", "entertainment"],
+  "lang": "en"
+}
