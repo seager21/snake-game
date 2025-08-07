@@ -968,6 +968,52 @@ body {
 }
 
 @media (max-width: 480px) {
+    .screen {
+        padding: 30px 15px 80px 15px;
+    }
+    
+    #game-screen {
+        padding: 15px 15px 120px 15px;
+    }
+    
+    .game-info {
+        gap: 8px;
+        padding: 0 5px;
+    }
+    
+    .score-display .label, 
+    .level-display .label, 
+    .high-score-display .label {
+        font-size: 0.7rem;
+    }
+    
+    .score-display .value, 
+    .level-display .value, 
+    .high-score-display .value {
+        font-size: 1rem;
+    }
+    
+    .mobile-controls {
+        bottom: 20px;
+        gap: 15px;
+        padding-bottom: 30px;
+    }
+    
+    .touch-pad {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .directional-buttons {
+        width: 150px;
+        height: 150px;
+        gap: 6px;
+    }
+    
+    .dir-btn {
+        font-size: 1.2rem;
+        min-height: 42px;
+    }
     .neon-text {
         font-size: 1.8rem;
         letter-spacing: 0.1em;
