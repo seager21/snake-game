@@ -388,11 +388,31 @@ class VaporSnake {
     selectColor(color) {
         this.selectedColor = color;
         
-        // Update UI
+        // Update traditional color buttons (if they exist)
         document.querySelectorAll('.color-btn').forEach(btn => {
             btn.classList.remove('active');
         });
-        document.querySelector(`[data-color="${color}"]`).classList.add('active');
+        const colorBtn = document.querySelector(`[data-color="${color}"]`);
+        if (colorBtn && colorBtn.classList.contains('color-btn')) {
+            colorBtn.classList.add('active');
+        }
+        
+        // Update dropdown selection
+        const dropdownOptions = document.querySelectorAll('.dropdown-option');
+        dropdownOptions.forEach(option => {
+            option.classList.remove('active');
+            if (option.dataset.color === color) {
+                option.classList.add('active');
+                
+                // Update the dropdown display
+                const dropdownSelected = document.getElementById('color-selected');
+                const colorName = option.querySelector('span').textContent;
+                const colorPreview = option.querySelector('.color-preview').className;
+                
+                dropdownSelected.querySelector('span').textContent = colorName;
+                dropdownSelected.querySelector('.color-preview').className = colorPreview;
+            }
+        });
     }
     
     startGame() {
