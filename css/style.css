@@ -825,6 +825,13 @@ body {
         margin: 10px 0;
     }
     
+    .game-info {
+        gap: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 0 10px;
+    }
+    
     .score-display, .level-display, .high-score-display {
         min-width: 80px;
     }
