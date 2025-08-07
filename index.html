@@ -3,19 +3,216 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Countdown Timer</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>V A P O R  S N A K E</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div id="game-container">
-        <h1>Snake Game</h1>
-        <canvas id="game-board"></canvas>
-        <div id="score">Score: 0</div>
-        <div id="high-score">High Score: 0</div>
-        <button id="restart-btn" onclick="restartGame()">Restart</button>
+    <!-- Animated Background -->
+    <div class="grid-background"></div>
+    <div class="stars"></div>
+    
+    <!-- Main Menu -->
+    <div id="main-menu" class="screen active">
+        <div class="logo">
+            <h1 class="neon-text">V A P O R</h1>
+            <h2 class="neon-text secondary">S N A K E</h2>
+            <div class="subtitle">Experience the Future of Classic Gaming</div>
+        </div>
+        
+        <div class="menu-buttons">
+            <button class="neon-button" onclick="showNewGameMenu()">
+                <i class="fas fa-play"></i> NEW GAME
+            </button>
+            <button class="neon-button" onclick="showHighScores()">
+                <i class="fas fa-trophy"></i> HIGH SCORES
+            </button>
+        </div>
+        
+        <div class="credits">
+            <div>A E S T H E T I C  G A M I N G</div>
+        </div>
     </div>
-<script src="js/script.js"></script>
+    
+    <!-- New Game Setup -->
+    <div id="setup-menu" class="screen">
+        <div class="setup-container">
+            <h2 class="neon-text">G A M E  S E T U P</h2>
+            
+            <div class="setup-section">
+                <label class="setup-label">DIFFICULTY LEVEL</label>
+                <div class="level-selector">
+                    <button class="level-btn active" data-level="1">1</button>
+                    <button class="level-btn" data-level="2">2</button>
+                    <button class="level-btn" data-level="3">3</button>
+                    <button class="level-btn" data-level="4">4</button>
+                    <button class="level-btn" data-level="5">5</button>
+                    <button class="level-btn" data-level="6">6</button>
+                    <button class="level-btn" data-level="7">7</button>
+                    <button class="level-btn" data-level="8">8</button>
+                    <button class="level-btn" data-level="9">9</button>
+                    <button class="level-btn" data-level="10">10</button>
+                </div>
+                <div class="level-description">Level 1: Chill Vibes | Level 10: Hyperspeed</div>
+            </div>
+            
+            <div class="setup-section">
+                <label class="setup-label">SNAKE COLOR</label>
+                <div class="color-selector">
+                    <button class="color-btn active" data-color="magenta">
+                        <div class="color-preview magenta"></div>
+                        MAGENTA RED
+                    </button>
+                    <button class="color-btn" data-color="white">
+                        <div class="color-preview white"></div>
+                        WHITE
+                    </button>
+                    <button class="color-btn" data-color="cyan">
+                        <div class="color-preview cyan"></div>
+                        CYAN BLUE
+                    </button>
+                    <button class="color-btn" data-color="amber">
+                        <div class="color-preview amber"></div>
+                        AMBER GOLD
+                    </button>
+                    <button class="color-btn" data-color="rainbow">
+                        <div class="color-preview rainbow"></div>
+                        RAINBOW
+                    </button>
+                    <button class="color-btn" data-color="green">
+                        <div class="color-preview green"></div>
+                        CLASSIC GREEN
+                    </button>
+                </div>
+            </div>
+            
+            <div class="setup-buttons">
+                <button class="neon-button secondary" onclick="showMainMenu()">
+                    <i class="fas fa-arrow-left"></i> BACK
+                </button>
+                <button class="neon-button" onclick="startGame()">
+                    <i class="fas fa-rocket"></i> START GAME
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- High Scores -->
+    <div id="highscores-menu" class="screen">
+        <div class="highscores-container">
+            <h2 class="neon-text">H I G H  S C O R E S</h2>
+            <div class="scores-list">
+                <div class="score-entry">
+                    <span class="rank">01</span>
+                    <span class="name">NEON_MASTER</span>
+                    <span class="score">8420</span>
+                </div>
+                <div class="score-entry">
+                    <span class="rank">02</span>
+                    <span class="name">VAPOR_KING</span>
+                    <span class="score">7350</span>
+                </div>
+                <div class="score-entry">
+                    <span class="rank">03</span>
+                    <span class="name">SYNTH_WAVE</span>
+                    <span class="score">6890</span>
+                </div>
+                <div class="score-entry">
+                    <span class="rank">04</span>
+                    <span class="name">RETRO_GAMER</span>
+                    <span class="score">5420</span>
+                </div>
+                <div class="score-entry">
+                    <span class="rank">05</span>
+                    <span class="name">CYBER_PUNK</span>
+                    <span class="score">4780</span>
+                </div>
+                <div class="score-entry personal-best">
+                    <span class="rank">--</span>
+                    <span class="name">YOUR BEST</span>
+                    <span class="score" id="personal-best-score">0</span>
+                </div>
+            </div>
+            <button class="neon-button" onclick="showMainMenu()">
+                <i class="fas fa-arrow-left"></i> BACK
+            </button>
+        </div>
+    </div>
+    
+    <!-- Game Screen -->
+    <div id="game-screen" class="screen">
+        <div class="game-header">
+            <div class="game-info">
+                <div class="score-display">
+                    <span class="label">SCORE</span>
+                    <span id="score" class="value">0</span>
+                </div>
+                <div class="level-display">
+                    <span class="label">LEVEL</span>
+                    <span id="level" class="value">1</span>
+                </div>
+                <div class="high-score-display">
+                    <span class="label">BEST</span>
+                    <span id="high-score" class="value">0</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="game-container">
+            <canvas id="game-board"></canvas>
+        </div>
+        
+        <div class="game-controls">
+            <div class="controls-info">
+                <span>Use ARROW KEYS or WASD to control</span>
+            </div>
+            <button class="neon-button small" onclick="pauseGame()">
+                <i class="fas fa-pause"></i> PAUSE
+            </button>
+            <button class="neon-button small secondary" onclick="showMainMenu()">
+                <i class="fas fa-home"></i> MENU
+            </button>
+        </div>
+    </div>
+    
+    <!-- Game Over Modal -->
+    <div id="game-over-modal" class="modal">
+        <div class="modal-content">
+            <h2 class="neon-text">G A M E  O V E R</h2>
+            <div class="final-score">
+                <span class="label">FINAL SCORE</span>
+                <span id="final-score" class="value">0</span>
+            </div>
+            <div id="new-high-score" class="new-high-score hidden">
+                <span class="neon-text">NEW HIGH SCORE!</span>
+            </div>
+            <div class="modal-buttons">
+                <button class="neon-button" onclick="restartGame()">
+                    <i class="fas fa-redo"></i> PLAY AGAIN
+                </button>
+                <button class="neon-button secondary" onclick="showMainMenu()">
+                    <i class="fas fa-home"></i> MAIN MENU
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Pause Modal -->
+    <div id="pause-modal" class="modal">
+        <div class="modal-content">
+            <h2 class="neon-text">P A U S E D</h2>
+            <div class="modal-buttons">
+                <button class="neon-button" onclick="resumeGame()">
+                    <i class="fas fa-play"></i> RESUME
+                </button>
+                <button class="neon-button secondary" onclick="showMainMenu()">
+                    <i class="fas fa-home"></i> MAIN MENU
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
 </body>
 </html>
