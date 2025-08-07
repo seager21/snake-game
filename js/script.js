@@ -667,4 +667,17 @@ function restartGame() {
 // Initialize the game when the page loads
 document.addEventListener('DOMContentLoaded', () => {
     game = new VaporSnake();
+    
+    // Register service worker for mobile app experience
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js')
+                .then((registration) => {
+                    console.log('SW registered: ', registration);
+                })
+                .catch((registrationError) => {
+                    console.log('SW registration failed: ', registrationError);
+                });
+        });
+    }
 });
