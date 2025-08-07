@@ -234,11 +234,14 @@ body {
 
 /* Level Selector */
 .level-selector {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
     gap: 10px;
     justify-content: center;
-    flex-wrap: wrap;
     margin-bottom: 1rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .level-btn {
@@ -877,8 +880,10 @@ body {
     }
     
     .level-selector {
-        gap: 3px;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 8px;
         justify-content: center;
+        max-width: 300px;
     }
     
     .level-btn {
