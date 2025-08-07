@@ -6,12 +6,17 @@
   "scripts": {
     "start": "live-server .",
     "dev": "live-server .",
-    "build": "echo 'Building...' && npm run start"
+    "build": "echo 'Build complete - ready for deployment!'",
+    "deploy": "echo 'Ready to deploy to your hosting platform!'"
   },
   "keywords": ["snake", "game", "vaporwave", "retro", "javascript"],
   "author": "Snake Game Developer",
   "license": "MIT",
   "devDependencies": {
     "live-server": "^1.2.2"
+  },
+  "homepage": ".",
+  "engines": {
+    "node": ">=14.0.0"
   }
 }

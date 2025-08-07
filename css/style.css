@@ -403,10 +403,22 @@ body {
     animation: rainbowShift 2s infinite;
 }
 .color-preview.green { background: linear-gradient(45deg, #00ff41, #00cc33); }
+.color-preview.blue { background: linear-gradient(45deg, #0080ff, #0066cc); }
+.color-preview.purple { background: linear-gradient(45deg, #8338ec, #6a1b9a); }
+.color-preview.black { background: linear-gradient(45deg, #2c2c2c, #000000); }
+.color-preview.neon { background: linear-gradient(45deg, #ff006e, #00f5ff); animation: neonShift 1.5s infinite; }
+.color-preview.gold { background: linear-gradient(45deg, #ffd700, #ffb000); }
+.color-preview.silver { background: linear-gradient(45deg, #c0c0c0, #808080); }
+.color-preview.pink { background: linear-gradient(45deg, #ff69b4, #ff1493); }
 
 @keyframes rainbowShift {
     0%, 100% { filter: hue-rotate(0deg); }
     50% { filter: hue-rotate(180deg); }
+}
+
+@keyframes neonShift {
+    0%, 100% { filter: hue-rotate(0deg) brightness(1); }
+    50% { filter: hue-rotate(90deg) brightness(1.2); }
 }
 
 .setup-buttons {

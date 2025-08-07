@@ -635,6 +635,21 @@ class VaporSnake {
                 return isHead ? '#ffbe0b' : '#ff8500';
             case 'green':
                 return isHead ? '#00ff41' : '#00cc33';
+            case 'blue':
+                return isHead ? '#0080ff' : '#0066cc';
+            case 'purple':
+                return isHead ? '#8338ec' : '#6a1b9a';
+            case 'black':
+                return isHead ? '#2c2c2c' : '#1a1a1a';
+            case 'neon':
+                const neonHue = (Date.now() * 0.1) % 360;
+                return `hsl(${neonHue}, 100%, ${isHead ? '60%' : '50%'})`;
+            case 'gold':
+                return isHead ? '#ffd700' : '#ffb000';
+            case 'silver':
+                return isHead ? '#c0c0c0' : '#808080';
+            case 'pink':
+                return isHead ? '#ff69b4' : '#ff1493';
             case 'rainbow':
                 const hue = (this.rainbowHue + segmentIndex * 20) % 360;
                 return `hsl(${hue}, 100%, ${isHead ? '60%' : '50%'})`;
