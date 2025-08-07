@@ -240,6 +240,11 @@ class VaporSnake {
         
         this.changingDirection = true;
         
+        // Haptic feedback for mobile devices
+        if (navigator.vibrate) {
+            navigator.vibrate(50);
+        }
+        
         switch (direction) {
             case 'left':
                 if (this.dx === 0) {
