@@ -1,0 +1,17 @@
+{
+  "name": "vaporwave-snake",
+  "version": "1.0.0",
+  "description": "A retro/vaporwave themed Snake game with enhanced features",
+  "main": "index.html",
+  "scripts": {
+    "start": "live-server .",
+    "dev": "live-server .",
+    "build": "echo 'Building...' && npm run start"
+  },
+  "keywords": ["snake", "game", "vaporwave", "retro", "javascript"],
+  "author": "Snake Game Developer",
+  "license": "MIT",
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  }
+}
