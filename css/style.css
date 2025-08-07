@@ -872,9 +872,38 @@ body {
         padding: 10px 15px;
     }
     
+    .color-dropdown {
+        max-width: 100%;
+    }
+    
+    .dropdown-selected {
+        font-size: 0.8rem;
+        padding: 10px 14px;
+    }
+    
+    .dropdown-option {
+        font-size: 0.75rem;
+        padding: 8px 14px;
+    }
+    
     .color-preview {
         width: 16px;
         height: 16px;
+    }
+    
+    .score-entry {
+        grid-template-columns: 35px 1fr 60px;
+        padding: 8px 10px;
+        font-size: 0.8rem;
+        gap: 6px;
+    }
+    
+    .score-entry .name {
+        font-size: 0.75rem;
+    }
+    
+    .score-entry .score {
+        font-size: 0.8rem;
     }
     
     .game-info {
