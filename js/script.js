@@ -124,65 +124,112 @@ class VaporSnake {
         
         // Touch pad controls
         const touchPad = document.getElementById('touch-pad');
-        let startX, startY, currentX, currentY;
+        let startX, startY, currentX, currentY, isTracking = false;
+        
+        const getTouchPos = (touch, rect) => {
+            return {
+                x: touch.clientX - rect.left - rect.width / 2,
+                y: touch.clientY - rect.top - rect.height / 2
+            };
+        };
         
         touchPad.addEventListener('touchstart', (e) => {
             e.preventDefault();
+            if (this.gameState !== 'playing') return;
+            
             const touch = e.touches[0];
             const rect = touchPad.getBoundingClientRect();
-            startX = touch.clientX - rect.left - rect.width / 2;
-            startY = touch.clientY - rect.top - rect.height / 2;
+            const pos = getTouchPos(touch, rect);
+            
+            startX = pos.x;
+            startY = pos.y;
+            currentX = pos.x;
+            currentY = pos.y;
+            isTracking = true;
+            
+            // Visual feedback
+            touchPad.style.background = 'rgba(0, 245, 255, 0.2)';
         }, { passive: false });
         
         touchPad.addEventListener('touchmove', (e) => {
             e.preventDefault();
+            if (!isTracking || this.gameState !== 'playing') return;
+            
             const touch = e.touches[0];
             const rect = touchPad.getBoundingClientRect();
-            currentX = touch.clientX - rect.left - rect.width / 2;
-            currentY = touch.clientY - rect.top - rect.height / 2;
+            const pos = getTouchPos(touch, rect);
+            
+            currentX = pos.x;
+            currentY = pos.y;
         }, { passive: false });
         
         touchPad.addEventListener('touchend', (e) => {
             e.preventDefault();
-            if (!startX || !startY) return;
+            
+            // Reset visual feedback
+            touchPad.style.background = 'rgba(0, 245, 255, 0.1)';
+            
+            if (!isTracking || this.gameState !== 'playing') {
+                isTracking = false;
+                return;
+            }
             
             const deltaX = currentX - startX;
             const deltaY = currentY - startY;
-            const threshold = 20;
+            const threshold = 15; // Reduced threshold for better sensitivity
             
-            if (Math.abs(deltaX) > Math.abs(deltaY)) {
-                // Horizontal movement
-                if (Math.abs(deltaX) > threshold) {
+            // Determine direction based on the larger movement
+            if (Math.abs(deltaX) > threshold || Math.abs(deltaY) > threshold) {
+                if (Math.abs(deltaX) > Math.abs(deltaY)) {
+                    // Horizontal movement is dominant
                     this.handleMobileDirection(deltaX > 0 ? 'right' : 'left');
-                }
-            } else {
-                // Vertical movement
-                if (Math.abs(deltaY) > threshold) {
+                } else {
+                    // Vertical movement is dominant
                     this.handleMobileDirection(deltaY > 0 ? 'down' : 'up');
                 }
             }
             
+            // Reset tracking
             startX = startY = currentX = currentY = null;
+            isTracking = false;
         }, { passive: false });
+        
+        // Prevent context menu on long press
+        touchPad.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+        });
         
         // Directional buttons
         document.querySelectorAll('.dir-btn[data-direction]').forEach(btn => {
-            btn.addEventListener('touchstart', (e) => {
+            // Remove any existing event listeners by cloning the node
+            const newBtn = btn.cloneNode(true);
+            btn.parentNode.replaceChild(newBtn, btn);
+            
+            newBtn.addEventListener('touchstart', (e) => {
                 e.preventDefault();
-                const direction = btn.dataset.direction;
+                if (this.gameState !== 'playing') return;
+                
+                const direction = newBtn.dataset.direction;
                 this.handleMobileDirection(direction);
                 
                 // Visual feedback
-                btn.style.transform = 'scale(0.9)';
+                newBtn.style.transform = 'scale(0.9)';
+                newBtn.style.background = 'var(--neon-purple)';
+                newBtn.style.color = 'var(--dark-bg)';
+                
                 setTimeout(() => {
-                    btn.style.transform = '';
+                    newBtn.style.transform = '';
+                    newBtn.style.background = '';
+                    newBtn.style.color = '';
                 }, 150);
             }, { passive: false });
             
             // Also handle click for testing on desktop
-            btn.addEventListener('click', (e) => {
+            newBtn.addEventListener('click', (e) => {
                 e.preventDefault();
-                const direction = btn.dataset.direction;
+                if (this.gameState !== 'playing') return;
+                
+                const direction = newBtn.dataset.direction;
                 this.handleMobileDirection(direction);
             });
         });
