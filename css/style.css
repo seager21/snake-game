@@ -734,18 +734,29 @@ body {
     }
     
     .neon-text {
-        font-size: 2.5rem;
-        line-height: 1.2;
+        font-size: 2.2rem;
+        line-height: 1.1;
+        text-align: center;
+        white-space: pre-line;
     }
     
     .neon-text.secondary {
-        font-size: 2rem;
-        line-height: 1.2;
+        font-size: 1.8rem;
+        line-height: 1.1;
+        text-align: center;
+        white-space: pre-line;
     }
     
     .subtitle {
         font-size: 0.9rem;
         line-height: 1.4;
+    }
+    
+    .credits div {
+        font-size: 0.8rem;
+        line-height: 1.2;
+        white-space: pre-line;
+        text-align: center;
     }
     
     .color-selector {
@@ -755,6 +766,23 @@ body {
     
     .color-dropdown {
         max-width: 100%;
+        margin: 0 10px;
+    }
+    
+    .dropdown-options {
+        max-height: 250px;
+        position: fixed;
+        top: auto;
+        bottom: 0;
+        left: 10px;
+        right: 10px;
+        border-radius: 12px 12px 0 0;
+        border: 2px solid var(--neon-cyan);
+        transform: translateY(100%);
+    }
+    
+    .dropdown-options.open {
+        transform: translateY(0);
     }
     
     .dropdown-selected {
