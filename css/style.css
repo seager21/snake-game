@@ -823,13 +823,33 @@ body {
     
     .game-container {
         margin: 10px 0;
+        padding-bottom: 15px;
     }
     
     .game-info {
-        gap: 15px;
-        flex-wrap: wrap;
-        justify-content: center;
+        gap: 10px;
+        flex-wrap: nowrap;
+        justify-content: space-between;
         padding: 0 10px;
+        align-items: center;
+    }
+    
+    .score-display, .level-display, .high-score-display {
+        min-width: auto;
+        flex: 1;
+        text-align: center;
+    }
+    
+    .game-controls {
+        flex-direction: row;
+        gap: 15px;
+        padding: 0 20px 20px 20px;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+    
+    .controls-info {
+        display: none;
     }
     
     .score-display, .level-display, .high-score-display {
