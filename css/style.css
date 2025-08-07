@@ -1131,14 +1131,14 @@ body {
     
     /* Adjust mobile controls for small screens */
     .mobile-controls {
-        bottom: 80px;
+        bottom: 135px;
         scale: 0.8;
     }
     
     .directional-buttons {
         width: 120px;
         height: 120px;
-        margin: 0 15px;
+        margin: 0 50px;
     }
     
     .touch-pad {
@@ -1165,7 +1165,7 @@ body {
     }
     
     .mobile-controls {
-        bottom: 50px;
+        bottom: 135px;
         scale: 0.7;
     }
     
