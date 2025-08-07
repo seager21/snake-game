@@ -641,6 +641,17 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+}
+
+.touch-pad:active {
+    background: rgba(0, 245, 255, 0.2);
+    box-shadow: 0 0 30px rgba(0, 245, 255, 0.5);
+    transform: scale(0.98);
 }
 
 .touch-center {
