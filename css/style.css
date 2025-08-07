@@ -349,6 +349,7 @@ body {
     font-family: 'Share Tech Mono', monospace;
     font-size: 1.1rem;
     align-items: center;
+    gap: 10px;
 }
 
 .score-entry:last-child {
@@ -364,11 +365,15 @@ body {
 .score-entry .rank {
     color: var(--neon-pink);
     font-weight: 700;
+    text-align: center;
 }
 
 .score-entry .name {
     text-align: left;
     color: var(--neon-cyan);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .score-entry .score {
