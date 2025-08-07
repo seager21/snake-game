@@ -34,15 +34,35 @@ A retro/vaporwave themed Snake game with enhanced features and aesthetic design.
 - **Pause Functionality**: Pause/resume with spacebar or escape
 - **Game Over Modal**: Beautiful end screen with restart options
 
-## 🎮 Controls
+### 🎮 Controls
 
-### Movement
+#### Desktop
 - **Arrow Keys**: ↑ ↓ ← → Navigate snake
 - **WASD**: Alternative movement controls
 
-### Game Controls
+#### Mobile & Touch
+- **Touch Pad**: Swipe in any direction to control snake
+- **Directional Buttons**: Tap arrow buttons for precise control
+- **Touch Controls**: Optimized for mobile gameplay
+
+#### Game Controls
 - **Spacebar/Escape**: Pause/Resume game
-- **Mouse**: Navigate menus and buttons
+- **Mouse/Touch**: Navigate menus and buttons
+
+## 📱 Mobile Features
+
+### Touch Controls
+- **Swipe Pad**: Intuitive swipe gestures for movement
+- **Button Controls**: Traditional D-pad style buttons
+- **Responsive Design**: Adapts to all screen sizes
+- **PWA Support**: Install as an app on mobile devices
+
+### Mobile Optimizations
+- **Responsive Canvas**: Automatically scales for screen size
+- **Touch-Friendly UI**: Larger buttons and touch targets
+- **Landscape Support**: Works in both orientations
+- **High DPI Support**: Crisp graphics on retina displays
+- **Offline Play**: Service worker enables offline gaming
 
 ## 🚀 Getting Started
 
