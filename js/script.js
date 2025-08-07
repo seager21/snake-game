@@ -282,10 +282,65 @@ class VaporSnake {
             btn.addEventListener('click', (e) => this.selectColor(e.target.dataset.color));
         });
         
+        // Color dropdown
+        this.setupColorDropdown();
+        
         // Prevent arrow key scrolling
         window.addEventListener('keydown', (e) => {
             if(['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) {
                 e.preventDefault();
+            }
+        });
+    }
+    
+    setupColorDropdown() {
+        const dropdownSelected = document.getElementById('color-selected');
+        const dropdownOptions = document.getElementById('color-options');
+        const options = document.querySelectorAll('.dropdown-option');
+        
+        // Toggle dropdown
+        dropdownSelected.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdownSelected.classList.toggle('open');
+            dropdownOptions.classList.toggle('open');
+        });
+        
+        // Select option
+        options.forEach(option => {
+            option.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const color = option.dataset.color;
+                const colorName = option.querySelector('span').textContent;
+                const colorPreview = option.querySelector('.color-preview').className;
+                
+                // Update selected display
+                dropdownSelected.querySelector('span').textContent = colorName;
+                dropdownSelected.querySelector('.color-preview').className = colorPreview;
+                
+                // Update active state
+                options.forEach(opt => opt.classList.remove('active'));
+                option.classList.add('active');
+                
+                // Close dropdown
+                dropdownSelected.classList.remove('open');
+                dropdownOptions.classList.remove('open');
+                
+                // Update game color
+                this.selectColor(color);
+            });
+        });
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', () => {
+            dropdownSelected.classList.remove('open');
+            dropdownOptions.classList.remove('open');
+        });
+        
+        // Close dropdown on escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                dropdownSelected.classList.remove('open');
+                dropdownOptions.classList.remove('open');
             }
         });
     }
