@@ -65,31 +65,38 @@
             
             <div class="setup-section">
                 <label class="setup-label">SNAKE COLOR</label>
-                <div class="color-selector">
-                    <button class="color-btn active" data-color="magenta">
+                <div class="color-dropdown">
+                    <div class="dropdown-selected" id="color-selected">
                         <div class="color-preview magenta"></div>
-                        MAGENTA RED
-                    </button>
-                    <button class="color-btn" data-color="white">
-                        <div class="color-preview white"></div>
-                        WHITE
-                    </button>
-                    <button class="color-btn" data-color="cyan">
-                        <div class="color-preview cyan"></div>
-                        CYAN BLUE
-                    </button>
-                    <button class="color-btn" data-color="amber">
-                        <div class="color-preview amber"></div>
-                        AMBER GOLD
-                    </button>
-                    <button class="color-btn" data-color="rainbow">
-                        <div class="color-preview rainbow"></div>
-                        RAINBOW
-                    </button>
-                    <button class="color-btn" data-color="green">
-                        <div class="color-preview green"></div>
-                        CLASSIC GREEN
-                    </button>
+                        <span>MAGENTA RED</span>
+                        <i class="fas fa-chevron-down dropdown-arrow"></i>
+                    </div>
+                    <div class="dropdown-options" id="color-options">
+                        <div class="dropdown-option active" data-color="magenta">
+                            <div class="color-preview magenta"></div>
+                            <span>MAGENTA RED</span>
+                        </div>
+                        <div class="dropdown-option" data-color="white">
+                            <div class="color-preview white"></div>
+                            <span>WHITE</span>
+                        </div>
+                        <div class="dropdown-option" data-color="cyan">
+                            <div class="color-preview cyan"></div>
+                            <span>CYAN BLUE</span>
+                        </div>
+                        <div class="dropdown-option" data-color="amber">
+                            <div class="color-preview amber"></div>
+                            <span>AMBER GOLD</span>
+                        </div>
+                        <div class="dropdown-option" data-color="rainbow">
+                            <div class="color-preview rainbow"></div>
+                            <span>RAINBOW</span>
+                        </div>
+                        <div class="dropdown-option" data-color="green">
+                            <div class="color-preview green"></div>
+                            <span>CLASSIC GREEN</span>
+                        </div>
+                    </div>
                 </div>
             </div>
             
