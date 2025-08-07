@@ -731,6 +731,16 @@ body {
 @media (max-width: 768px) {
     body {
         overflow-x: hidden;
+        padding-top: 20px;
+    }
+    
+    .screen {
+        padding: 40px 20px 20px 20px;
+    }
+    
+    .logo {
+        margin-bottom: 2rem;
+        margin-top: 0.5rem;
     }
     
     .neon-text {
@@ -806,11 +816,13 @@ body {
         gap: 1rem;
     }
     
-    .game-info {
-        gap: 15px;
-        flex-wrap: wrap;
-        justify-content: center;
-        padding: 0 10px;
+    .game-header {
+        padding: 10px 20px;
+        margin-bottom: 10px;
+    }
+    
+    .game-container {
+        margin: 10px 0;
     }
     
     .score-display, .level-display, .high-score-display {
@@ -888,6 +900,37 @@ body {
     /* Show mobile controls */
     .mobile-controls {
         display: flex;
+        bottom: 80px;
+    }
+    
+    .touch-pad {
+        width: 140px;
+        height: 140px;
+        border: 3px solid var(--neon-cyan);
+    }
+    
+    .touch-center {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .directional-buttons {
+        width: 170px;
+        height: 170px;
+        gap: 8px;
+        margin: 0 25px;
+    }
+    
+    .dir-btn {
+        font-size: 1.4rem;
+        border: 3px solid var(--neon-purple);
+        border-radius: 10px;
+        min-height: 48px;
+    }
+    
+    .dir-btn.center {
+        font-size: 0.7rem;
+        font-weight: bold;
     }
 }
 
