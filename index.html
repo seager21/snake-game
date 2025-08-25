@@ -22,13 +22,13 @@
     <!-- Main Menu -->
     <div id="main-menu" class="screen active">
         <div class="logo">
-            <h1 class="neon-text">V A P O R</h1>
+            <h1 class="neon-text">K O I</h1>
             <h2 class="neon-text secondary">S N A K E R I N O</h2>
             <div class="subtitle">OG Bringing it back, só porque vos amo</div>
         </div>
         
         <div class="menu-buttons">
-            <button class="neon-button" onclick="showNewGameMenu()">
+            <button class="neon-button" onclick="showGameModeSelection()">
                 <i class="fas fa-play"></i> NEW GAME
             </button>
             <button class="neon-button" onclick="showHighScores()">
@@ -40,6 +40,46 @@
             <div>G R U P O
 D O
 W H A T S A P P</div>
+        </div>
+    </div>
+    
+    <!-- Game Mode Selection -->
+    <div id="gamemode-menu" class="screen">
+        <div class="gamemode-container">
+            <h2 class="neon-text">G A M E
+M O D E S</h2>
+            
+            <div class="gamemode-grid">
+                <div class="gamemode-card" data-mode="classic">
+                    <div class="gamemode-icon">
+                        <i class="fas fa-snake"></i>
+                    </div>
+                    <h3 class="gamemode-title">CLASSIC</h3>
+                    <p class="gamemode-description">The original Snake experience. Eat food, grow longer, avoid yourself!</p>
+                </div>
+                
+                <div class="gamemode-card" data-mode="timetrial">
+                    <div class="gamemode-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3 class="gamemode-title">TIME TRIAL</h3>
+                    <p class="gamemode-description">Race against time! Start with 30 seconds. +5s per food, +20s bonus every 5 points!</p>
+                </div>
+                
+                <div class="gamemode-card" data-mode="obstacle">
+                    <div class="gamemode-icon">
+                        <i class="fas fa-cube"></i>
+                    </div>
+                    <h3 class="gamemode-title">OBSTACLE</h3>
+                    <p class="gamemode-description">Navigate around randomly generated obstacles scattered across the field!</p>
+                </div>
+            </div>
+            
+            <div class="gamemode-buttons">
+                <button class="neon-button secondary" onclick="showMainMenu()">
+                    <i class="fas fa-arrow-left"></i> BACK
+                </button>
+            </div>
         </div>
     </div>
     
@@ -146,7 +186,14 @@ S E T U P</h2>
     <div id="highscores-menu" class="screen">
         <div class="highscores-container">
             <h2 class="neon-text">H I G H  S C O R E S</h2>
-            <div class="scores-list">
+            
+            <div class="gamemode-tabs">
+                <button class="tab-btn active" data-mode="classic">CLASSIC</button>
+                <button class="tab-btn" data-mode="timetrial">TIME TRIAL</button>
+                <button class="tab-btn" data-mode="obstacle">OBSTACLE</button>
+            </div>
+            
+            <div class="scores-list" id="scores-classic">
                 <div class="score-entry">
                     <span class="rank">01</span>
                     <span class="name">NÃO TENHO EMPREGO</span>
@@ -175,9 +222,76 @@ S E T U P</h2>
                 <div class="score-entry personal-best">
                     <span class="rank">--</span>
                     <span class="name">YOUR BEST</span>
-                    <span class="score" id="personal-best-score">0</span>
+                    <span class="score" id="personal-best-score-classic">0</span>
                 </div>
             </div>
+            
+            <div class="scores-list hidden" id="scores-timetrial">
+                <div class="score-entry">
+                    <span class="rank">01</span>
+                    <span class="name">SPEED_DEMON_PT</span>
+                    <span class="score">9240</span>
+                </div>
+                <div class="score-entry">
+                    <span class="rank">02</span>
+                    <span class="name">TEMPORAL_MASTER</span>
+                    <span class="score">8150</span>
+                </div>
+                <div class="score-entry">
+                    <span class="rank">03</span>
+                    <span class="name">CLOCKWORK_SNAKE</span>
+                    <span class="score">7890</span>
+                </div>
+                <div class="score-entry">
+                    <span class="rank">04</span>
+                    <span class="name">RUSH_HOUR_HERO</span>
+                    <span class="score">6420</span>
+                </div>
+                <div class="score-entry">
+                    <span class="rank">05</span>
+                    <span class="name">TIME_TRAVELER</span>
+                    <span class="score">5680</span>
+                </div>
+                <div class="score-entry personal-best">
+                    <span class="rank">--</span>
+                    <span class="name">YOUR BEST</span>
+                    <span class="score" id="personal-best-score-timetrial">0</span>
+                </div>
+            </div>
+            
+            <div class="scores-list hidden" id="scores-obstacle">
+                <div class="score-entry">
+                    <span class="rank">01</span>
+                    <span class="name">MAZE_RUNNER_2024</span>
+                    <span class="score">7650</span>
+                </div>
+                <div class="score-entry">
+                    <span class="rank">02</span>
+                    <span class="name">OBSTACLE_NINJA</span>
+                    <span class="score">6890</span>
+                </div>
+                <div class="score-entry">
+                    <span class="rank">03</span>
+                    <span class="name">BLOCK_BUSTER</span>
+                    <span class="score">6120</span>
+                </div>
+                <div class="score-entry">
+                    <span class="rank">04</span>
+                    <span class="name">NAVIGATOR_PRO</span>
+                    <span class="score">5540</span>
+                </div>
+                <div class="score-entry">
+                    <span class="rank">05</span>
+                    <span class="name">DODGE_MASTER</span>
+                    <span class="score">4980</span>
+                </div>
+                <div class="score-entry personal-best">
+                    <span class="rank">--</span>
+                    <span class="name">YOUR BEST</span>
+                    <span class="score" id="personal-best-score-obstacle">0</span>
+                </div>
+            </div>
+            
             <button class="neon-button" onclick="showMainMenu()">
                 <i class="fas fa-arrow-left"></i> BACK
             </button>
@@ -201,6 +315,10 @@ S E T U P</h2>
                     <span id="high-score" class="value">0</span>
                 </div>
             </div>
+            <div class="timer-display hidden" id="timer-display">
+                <span class="label">TIME</span>
+                <span id="timer" class="value">30</span>
+            </div>
         </div>
         
         <div class="game-container">
@@ -221,9 +339,6 @@ S E T U P</h2>
         
         <!-- Mobile Touch Controls -->
         <div id="mobile-controls" class="mobile-controls">
-            <div class="touch-pad" id="touch-pad">
-                <div class="touch-center"></div>
-            </div>
             <div class="directional-buttons">
                 <div></div>
                 <button class="dir-btn" data-direction="up" title="Move Up" aria-label="Move Up">
@@ -234,7 +349,7 @@ S E T U P</h2>
                     <i class="fas fa-chevron-left"></i>
                 </button>
                 <button class="dir-btn center" onclick="pauseGame()" title="Pause Game" aria-label="Pause Game">
-                    PAUSE
+                    <i class="fas fa-pause"></i>
                 </button>
                 <button class="dir-btn" data-direction="right" title="Move Right" aria-label="Move Right">
                     <i class="fas fa-chevron-right"></i>

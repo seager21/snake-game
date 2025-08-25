@@ -643,7 +643,7 @@ body {
 /* Mobile Touch Controls */
 .mobile-controls {
     position: absolute;
-    bottom: 120px;
+    bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
     display: none;
@@ -652,79 +652,55 @@ body {
 
 .mobile-controls.active {
     display: flex;
-}
-
-.touch-pad {
-    position: relative;
-    width: 120px;
-    height: 120px;
-    border: 2px solid var(--neon-cyan);
-    border-radius: 50%;
-    background: rgba(0, 245, 255, 0.1);
-    box-shadow: 0 0 20px rgba(0, 245, 255, 0.3);
-    display: flex;
-    align-items: center;
     justify-content: center;
-    transition: all 0.2s ease;
-    cursor: pointer;
-    user-select: none;
-    -webkit-user-select: none;
-    -webkit-touch-callout: none;
-}
-
-.touch-pad:active {
-    background: rgba(0, 245, 255, 0.2);
-    box-shadow: 0 0 30px rgba(0, 245, 255, 0.5);
-    transform: scale(0.98);
-}
-
-.touch-center {
-    width: 30px;
-    height: 30px;
-    background: var(--neon-cyan);
-    border-radius: 50%;
-    box-shadow: 0 0 15px var(--neon-cyan);
 }
 
 .directional-buttons {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    gap: 5px;
-    width: 150px;
-    height: 150px;
-    margin: 0 20px;
+    gap: 8px;
+    width: 180px;
+    height: 180px;
 }
 
 .dir-btn {
-    background: transparent;
+    background: rgba(131, 56, 236, 0.1);
     border: 2px solid var(--neon-purple);
     color: var(--neon-purple);
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     cursor: pointer;
     transition: all 0.2s ease;
-    box-shadow: 0 0 10px rgba(131, 56, 236, 0.3);
+    box-shadow: 0 0 15px rgba(131, 56, 236, 0.3);
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 8px;
-    user-select: none;
+    border-radius: 12px;
     -webkit-user-select: none;
+    user-select: none;
     -webkit-touch-callout: none;
+    min-height: 50px;
+    font-weight: bold;
 }
 
 .dir-btn:active {
     background: var(--neon-purple);
     color: var(--dark-bg);
-    box-shadow: 0 0 20px var(--neon-purple);
+    box-shadow: 0 0 25px var(--neon-purple);
     transform: scale(0.95);
 }
 
 .dir-btn.center {
-    background: rgba(131, 56, 236, 0.2);
+    background: rgba(255, 190, 11, 0.1);
     border-color: var(--neon-yellow);
     color: var(--neon-yellow);
-    font-size: 0.8rem;
+    font-size: 1rem;
+}
+
+.dir-btn.center:active {
+    background: var(--neon-yellow);
+    color: var(--dark-bg);
+    box-shadow: 0 0 25px var(--neon-yellow);
 }
 
 /* Mobile Layout Optimizations */
@@ -1198,6 +1174,182 @@ body {
         image-rendering: -moz-crisp-edges;
         image-rendering: crisp-edges;
     }
+}
+
+/* Game Mode Selection */
+.gamemode-container {
+    max-width: 1000px;
+    padding: 2rem;
+    text-align: center;
+}
+
+.gamemode-container h2 {
+    margin-bottom: 3rem;
+    font-size: 3rem;
+}
+
+.gamemode-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.gamemode-card {
+    background: rgba(15, 5, 20, 0.8);
+    border: 2px solid var(--neon-cyan);
+    border-radius: 10px;
+    padding: 2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.gamemode-card:hover {
+    border-color: var(--neon-pink);
+    box-shadow: 0 0 30px var(--neon-pink);
+    transform: translateY(-5px);
+}
+
+.gamemode-card.selected {
+    border-color: var(--neon-yellow);
+    box-shadow: 0 0 20px var(--neon-yellow);
+    background: rgba(255, 190, 11, 0.1);
+}
+
+.gamemode-icon {
+    font-size: 3rem;
+    color: var(--neon-cyan);
+    margin-bottom: 1rem;
+    text-shadow: var(--text-shadow);
+}
+
+.gamemode-card:hover .gamemode-icon {
+    color: var(--neon-pink);
+}
+
+.gamemode-card.selected .gamemode-icon {
+    color: var(--neon-yellow);
+}
+
+.gamemode-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--neon-cyan);
+    margin-bottom: 1rem;
+    letter-spacing: 0.1em;
+}
+
+.gamemode-card:hover .gamemode-title {
+    color: var(--neon-pink);
+}
+
+.gamemode-card.selected .gamemode-title {
+    color: var(--neon-yellow);
+}
+
+.gamemode-description {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.5;
+}
+
+.gamemode-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+/* High Score Tabs */
+.gamemode-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.tab-btn {
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 10px 20px;
+    background: transparent;
+    border: 2px solid rgba(0, 245, 255, 0.3);
+    color: rgba(0, 245, 255, 0.6);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    letter-spacing: 0.1em;
+}
+
+.tab-btn.active {
+    border-color: var(--neon-cyan);
+    color: var(--neon-cyan);
+    box-shadow: 0 0 10px var(--neon-cyan);
+}
+
+.tab-btn:hover {
+    border-color: var(--neon-cyan);
+    color: var(--neon-cyan);
+}
+
+/* Timer Display */
+.timer-display {
+    text-align: center;
+    padding: 1rem 0;
+    border-top: 1px solid rgba(0, 245, 255, 0.3);
+    margin-top: 1rem;
+}
+
+.timer-display .label {
+    display: block;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--neon-yellow);
+    margin-bottom: 0.5rem;
+}
+
+.timer-display .value {
+    font-family: 'Orbitron', monospace;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--neon-yellow);
+    text-shadow: 0 0 10px currentColor;
+}
+
+.timer-display.warning .value {
+    color: var(--neon-pink);
+    animation: timerWarning 0.5s infinite alternate;
+}
+
+@keyframes timerWarning {
+    0% { opacity: 1; }
+    100% { opacity: 0.5; }
+}
+
+/* Bonus animation */
+@keyframes bonusFade {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.5);
+    }
+    20% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.2);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -100%) scale(1);
+    }
+}
+
+/* Hidden utility class */
+.hidden {
+    display: none !important;
 }
 
 /* Reduce motion for accessibility */

@@ -17,6 +17,7 @@ class VaporSnake {
         this.level = 1;
         this.selectedLevel = 1;
         this.selectedColor = 'magenta';
+        this.selectedGameMode = 'classic';
         this.dx = 0;
         this.dy = 0;
         this.changingDirection = false;
@@ -24,14 +25,26 @@ class VaporSnake {
         this.isPaused = false;
         this.rainbowHue = 0;
         
+        // Time Trial properties
+        this.timeRemaining = 30;
+        this.timeInterval = null;
+        this.pointsEarned = 0;
+        
+        // Obstacle mode properties
+        this.obstacles = [];
+        
         // Speed settings based on level (1-10)
         this.speedSettings = {
             1: 200, 2: 180, 3: 160, 4: 140, 5: 120,
             6: 100, 7: 80, 8: 60, 9: 40, 10: 20
         };
         
-        // High scores
-        this.highScore = this.loadHighScore();
+        // High scores for different game modes
+        this.highScores = {
+            classic: this.loadHighScore('classic'),
+            timetrial: this.loadHighScore('timetrial'),
+            obstacle: this.loadHighScore('obstacle')
+        };
         this.updateHighScoreDisplay();
         
         // Mobile detection
@@ -122,84 +135,7 @@ class VaporSnake {
     setupMobileControls() {
         if (!this.isMobile) return;
         
-        // Touch pad controls
-        const touchPad = document.getElementById('touch-pad');
-        let startX, startY, currentX, currentY, isTracking = false;
-        
-        const getTouchPos = (touch, rect) => {
-            return {
-                x: touch.clientX - rect.left - rect.width / 2,
-                y: touch.clientY - rect.top - rect.height / 2
-            };
-        };
-        
-        touchPad.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            if (this.gameState !== 'playing') return;
-            
-            const touch = e.touches[0];
-            const rect = touchPad.getBoundingClientRect();
-            const pos = getTouchPos(touch, rect);
-            
-            startX = pos.x;
-            startY = pos.y;
-            currentX = pos.x;
-            currentY = pos.y;
-            isTracking = true;
-            
-            // Visual feedback
-            touchPad.style.background = 'rgba(0, 245, 255, 0.2)';
-        }, { passive: false });
-        
-        touchPad.addEventListener('touchmove', (e) => {
-            e.preventDefault();
-            if (!isTracking || this.gameState !== 'playing') return;
-            
-            const touch = e.touches[0];
-            const rect = touchPad.getBoundingClientRect();
-            const pos = getTouchPos(touch, rect);
-            
-            currentX = pos.x;
-            currentY = pos.y;
-        }, { passive: false });
-        
-        touchPad.addEventListener('touchend', (e) => {
-            e.preventDefault();
-            
-            // Reset visual feedback
-            touchPad.style.background = 'rgba(0, 245, 255, 0.1)';
-            
-            if (!isTracking || this.gameState !== 'playing') {
-                isTracking = false;
-                return;
-            }
-            
-            const deltaX = currentX - startX;
-            const deltaY = currentY - startY;
-            const threshold = 15; // Reduced threshold for better sensitivity
-            
-            // Determine direction based on the larger movement
-            if (Math.abs(deltaX) > threshold || Math.abs(deltaY) > threshold) {
-                if (Math.abs(deltaX) > Math.abs(deltaY)) {
-                    // Horizontal movement is dominant
-                    this.handleMobileDirection(deltaX > 0 ? 'right' : 'left');
-                } else {
-                    // Vertical movement is dominant
-                    this.handleMobileDirection(deltaY > 0 ? 'down' : 'up');
-                }
-            }
-            
-            // Reset tracking
-            startX = startY = currentX = currentY = null;
-            isTracking = false;
-        }, { passive: false });
-        
-        // Prevent context menu on long press
-        touchPad.addEventListener('contextmenu', (e) => {
-            e.preventDefault();
-        });
-        
-        // Directional buttons
+        // Directional buttons only
         document.querySelectorAll('.dir-btn[data-direction]').forEach(btn => {
             // Remove any existing event listeners by cloning the node
             const newBtn = btn.cloneNode(true);
@@ -290,6 +226,12 @@ class VaporSnake {
         // Color dropdown
         this.setupColorDropdown();
         
+        // Game mode selection
+        this.setupGameModeSelection();
+        
+        // High score tabs
+        this.setupHighScoreTabs();
+        
         // Prevent arrow key scrolling
         window.addEventListener('keydown', (e) => {
             if(['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) {
@@ -348,6 +290,53 @@ class VaporSnake {
                 dropdownOptions.classList.remove('open');
             }
         });
+    }
+    
+    setupGameModeSelection() {
+        document.querySelectorAll('.gamemode-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const mode = card.dataset.mode;
+                this.selectGameMode(mode);
+                
+                // Proceed to setup after mode selection
+                setTimeout(() => {
+                    showNewGameMenu();
+                }, 300);
+            });
+        });
+    }
+    
+    setupHighScoreTabs() {
+        document.querySelectorAll('.tab-btn').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const mode = tab.dataset.mode;
+                this.showHighScoreMode(mode);
+                
+                // Update active tab
+                document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+            });
+        });
+    }
+    
+    selectGameMode(mode) {
+        this.selectedGameMode = mode;
+        
+        // Update visual selection
+        document.querySelectorAll('.gamemode-card').forEach(card => {
+            card.classList.remove('selected');
+        });
+        document.querySelector(`[data-mode="${mode}"]`).classList.add('selected');
+    }
+    
+    showHighScoreMode(mode) {
+        // Hide all score lists
+        document.querySelectorAll('.scores-list').forEach(list => {
+            list.classList.add('hidden');
+        });
+        
+        // Show selected mode scores
+        document.getElementById(`scores-${mode}`).classList.remove('hidden');
     }
     
     handleKeyPress(event) {
@@ -429,6 +418,10 @@ class VaporSnake {
         this.gameRunning = true;
         this.isPaused = false;
         this.changingDirection = false;
+        this.pointsEarned = 0;
+        
+        // Initialize mode-specific properties
+        this.initGameMode();
         
         // Initialize snake
         this.snake = [
@@ -437,6 +430,14 @@ class VaporSnake {
             { x: 60, y: 100 }
         ];
         
+        // Clear any existing obstacles
+        this.obstacles = [];
+        
+        // Generate obstacles for obstacle mode
+        if (this.selectedGameMode === 'obstacle') {
+            this.generateObstacles();
+        }
+        
         // Spawn first food
         this.spawnFood();
         
@@ -444,9 +445,101 @@ class VaporSnake {
         this.showScreen('game-screen');
         this.updateScore();
         this.updateLevel();
+        this.updateModeSpecificUI();
         
         // Start game loop
         this.gameLoop();
+    }
+    
+    initGameMode() {
+        if (this.selectedGameMode === 'timetrial') {
+            this.timeRemaining = 30;
+            this.startTimer();
+            document.getElementById('timer-display').classList.remove('hidden');
+            this.updateTimer();
+        } else {
+            document.getElementById('timer-display').classList.add('hidden');
+            this.clearTimer();
+        }
+    }
+    
+    startTimer() {
+        this.clearTimer();
+        this.timeInterval = setInterval(() => {
+            this.timeRemaining--;
+            this.updateTimer();
+            
+            if (this.timeRemaining <= 0) {
+                this.endGame();
+            }
+        }, 1000);
+    }
+    
+    clearTimer() {
+        if (this.timeInterval) {
+            clearInterval(this.timeInterval);
+            this.timeInterval = null;
+        }
+    }
+    
+    updateTimer() {
+        const timerElement = document.getElementById('timer');
+        const timerDisplay = document.getElementById('timer-display');
+        
+        if (timerElement) {
+            timerElement.textContent = this.timeRemaining;
+            
+            // Add warning class when time is low
+            if (this.timeRemaining <= 10) {
+                timerDisplay.classList.add('warning');
+            } else {
+                timerDisplay.classList.remove('warning');
+            }
+        }
+    }
+    
+    generateObstacles() {
+        const numObstacles = Math.floor(Math.random() * 8) + 5; // 5-12 obstacles
+        this.obstacles = [];
+        
+        for (let i = 0; i < numObstacles; i++) {
+            let obstacleX, obstacleY;
+            let validPosition = false;
+            let attempts = 0;
+            
+            while (!validPosition && attempts < 50) {
+                obstacleX = Math.floor(Math.random() * (this.canvasSize / this.gridSize)) * this.gridSize;
+                obstacleY = Math.floor(Math.random() * (this.canvasSize / this.gridSize)) * this.gridSize;
+                
+                // Check if position conflicts with snake or other obstacles
+                const conflictsWithSnake = this.snake.some(segment => 
+                    segment.x === obstacleX && segment.y === obstacleY
+                );
+                
+                const conflictsWithObstacles = this.obstacles.some(obstacle => 
+                    obstacle.x === obstacleX && obstacle.y === obstacleY
+                );
+                
+                // Keep obstacles away from snake's starting area
+                const tooCloseToStart = (
+                    Math.abs(obstacleX - 100) < this.gridSize * 3 && 
+                    Math.abs(obstacleY - 100) < this.gridSize * 2
+                );
+                
+                if (!conflictsWithSnake && !conflictsWithObstacles && !tooCloseToStart) {
+                    validPosition = true;
+                    this.obstacles.push({ x: obstacleX, y: obstacleY });
+                }
+                
+                attempts++;
+            }
+        }
+    }
+    
+    updateModeSpecificUI() {
+        // Update high score display for current mode
+        const currentHighScore = this.highScores[this.selectedGameMode] || 0;
+        document.getElementById('high-score').textContent = currentHighScore;
     }
     
     gameLoop() {
@@ -458,6 +551,7 @@ class VaporSnake {
             this.moveSnake();
             this.checkCollisions();
             this.checkFood();
+            this.drawObstacles();
             this.drawFood();
             this.drawSnake();
             this.updateRainbow();
@@ -519,6 +613,16 @@ class VaporSnake {
                 return;
             }
         }
+        
+        // Check collision with obstacles (obstacle mode only)
+        if (this.selectedGameMode === 'obstacle') {
+            for (let obstacle of this.obstacles) {
+                if (head.x === obstacle.x && head.y === obstacle.y) {
+                    this.endGame();
+                    return;
+                }
+            }
+        }
     }
     
     checkFood() {
@@ -526,6 +630,22 @@ class VaporSnake {
         
         if (head.x === this.food.x && head.y === this.food.y) {
             this.score += 10;
+            this.pointsEarned += 10;
+            
+            // Time trial mode bonuses
+            if (this.selectedGameMode === 'timetrial') {
+                // Add 5 seconds for each food
+                this.timeRemaining += 5;
+                
+                // Bonus time every 5 points (50 score)
+                if (this.pointsEarned % 50 === 0) {
+                    this.timeRemaining += 20;
+                    this.showTimeBonus();
+                }
+                
+                this.updateTimer();
+            }
+            
             this.spawnFood();
             this.updateScore();
             
@@ -538,12 +658,43 @@ class VaporSnake {
         }
     }
     
+    showTimeBonus() {
+        // Create a temporary bonus indicator
+        const bonus = document.createElement('div');
+        bonus.textContent = '+20 BONUS!';
+        bonus.style.cssText = `
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--neon-yellow);
+            font-family: 'Orbitron', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-shadow: 0 0 10px currentColor;
+            pointer-events: none;
+            z-index: 1000;
+            animation: bonusFade 2s ease-out forwards;
+        `;
+        
+        document.body.appendChild(bonus);
+        
+        setTimeout(() => {
+            if (bonus.parentNode) {
+                bonus.parentNode.removeChild(bonus);
+            }
+        }, 2000);
+    }
+    
     spawnFood() {
         let foodX, foodY;
         do {
             foodX = Math.floor(Math.random() * (this.canvasSize / this.gridSize)) * this.gridSize;
             foodY = Math.floor(Math.random() * (this.canvasSize / this.gridSize)) * this.gridSize;
-        } while (this.snake.some(segment => segment.x === foodX && segment.y === foodY));
+        } while (
+            this.snake.some(segment => segment.x === foodX && segment.y === foodY) ||
+            (this.selectedGameMode === 'obstacle' && this.obstacles.some(obstacle => obstacle.x === foodX && obstacle.y === foodY))
+        );
         
         this.food = { x: foodX, y: foodY };
     }
@@ -623,6 +774,34 @@ class VaporSnake {
         this.ctx.restore();
     }
     
+    drawObstacles() {
+        if (this.selectedGameMode !== 'obstacle') return;
+        
+        this.obstacles.forEach(obstacle => {
+            this.ctx.save();
+            this.ctx.shadowBlur = 15;
+            this.ctx.shadowColor = '#8338ec';
+            
+            // Create gradient for obstacles
+            const gradient = this.ctx.createLinearGradient(
+                obstacle.x, obstacle.y,
+                obstacle.x + this.gridSize, obstacle.y + this.gridSize
+            );
+            gradient.addColorStop(0, '#8338ec');
+            gradient.addColorStop(1, '#5a2d91');
+            
+            this.ctx.fillStyle = gradient;
+            this.ctx.fillRect(obstacle.x + 1, obstacle.y + 1, this.gridSize - 2, this.gridSize - 2);
+            
+            // Add border
+            this.ctx.strokeStyle = '#b794f6';
+            this.ctx.lineWidth = 2;
+            this.ctx.strokeRect(obstacle.x + 1, obstacle.y + 1, this.gridSize - 2, this.gridSize - 2);
+            
+            this.ctx.restore();
+        });
+    }
+    
     getSnakeColor(isHead, segmentIndex = 0) {
         switch (this.selectedColor) {
             case 'magenta':
@@ -664,9 +843,10 @@ class VaporSnake {
     
     updateScore() {
         document.getElementById('score').textContent = this.score;
-        if (this.score > this.highScore) {
-            this.highScore = this.score;
-            this.saveHighScore();
+        const currentHighScore = this.highScores[this.selectedGameMode] || 0;
+        if (this.score > currentHighScore) {
+            this.highScores[this.selectedGameMode] = this.score;
+            this.saveHighScore(this.selectedGameMode);
             this.updateHighScoreDisplay();
         }
     }
@@ -676,11 +856,18 @@ class VaporSnake {
     }
     
     updateHighScoreDisplay() {
-        document.getElementById('high-score').textContent = this.highScore;
+        const currentHighScore = this.highScores[this.selectedGameMode] || 0;
+        document.getElementById('high-score').textContent = currentHighScore;
     }
     
     updatePersonalBest() {
-        document.getElementById('personal-best-score').textContent = this.highScore;
+        // Update personal best for all game modes
+        Object.keys(this.highScores).forEach(mode => {
+            const scoreElement = document.getElementById(`personal-best-score-${mode}`);
+            if (scoreElement) {
+                scoreElement.textContent = this.highScores[mode] || 0;
+            }
+        });
     }
     
     pauseGame() {
@@ -702,13 +889,17 @@ class VaporSnake {
         this.gameRunning = false;
         this.gameState = 'gameOver';
         
+        // Clear timer for time trial mode
+        this.clearTimer();
+        
         // Update final score
         document.getElementById('final-score').textContent = this.score;
         
         // Check for new high score
-        if (this.score > this.highScore) {
-            this.highScore = this.score;
-            this.saveHighScore();
+        const currentHighScore = this.highScores[this.selectedGameMode] || 0;
+        if (this.score > currentHighScore) {
+            this.highScores[this.selectedGameMode] = this.score;
+            this.saveHighScore(this.selectedGameMode);
             this.updateHighScoreDisplay();
             this.updatePersonalBest();
             document.getElementById('new-high-score').classList.remove('hidden');
@@ -743,12 +934,12 @@ class VaporSnake {
         document.getElementById(modalId).classList.remove('active');
     }
     
-    saveHighScore() {
-        localStorage.setItem('vaporSnakeHighScore', this.highScore.toString());
+    saveHighScore(gameMode) {
+        localStorage.setItem(`vaporSnakeHighScore_${gameMode}`, this.highScores[gameMode].toString());
     }
     
-    loadHighScore() {
-        const saved = localStorage.getItem('vaporSnakeHighScore');
+    loadHighScore(gameMode) {
+        const saved = localStorage.getItem(`vaporSnakeHighScore_${gameMode}`);
         return saved ? parseInt(saved) : 0;
     }
 }
@@ -763,9 +954,15 @@ function showMainMenu() {
         game.gameState = 'menu';
         game.hideModal('game-over-modal');
         game.hideModal('pause-modal');
+        game.clearTimer();
     }
     document.querySelectorAll('.screen').forEach(screen => screen.classList.remove('active'));
     document.getElementById('main-menu').classList.add('active');
+}
+
+function showGameModeSelection() {
+    document.querySelectorAll('.screen').forEach(screen => screen.classList.remove('active'));
+    document.getElementById('gamemode-menu').classList.add('active');
 }
 
 function showNewGameMenu() {
