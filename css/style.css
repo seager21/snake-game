@@ -943,6 +943,87 @@ body {
         font-size: 0.7rem;
         font-weight: bold;
     }
+    
+    /* Game Mode Cards - Mobile Optimization */
+    .gamemode-container {
+        padding: 1rem;
+        max-width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-height: calc(100vh - 120px);
+    }
+    
+    .gamemode-container h2 {
+        font-size: 2.2rem;
+        margin-bottom: 2rem;
+        line-height: 1.1;
+        text-align: center;
+        flex-shrink: 0;
+    }
+    
+    .gamemode-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+        flex: 1;
+        align-content: center;
+    }
+    
+    .gamemode-card {
+        padding: 1.5rem;
+        border-radius: 15px;
+        margin: 0 10px;
+        min-height: 160px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+    
+    .gamemode-icon {
+        font-size: 2.5rem;
+        margin-bottom: 0.8rem;
+    }
+    
+    .gamemode-title {
+        font-size: 1.3rem;
+        margin-bottom: 0.8rem;
+    }
+    
+    .gamemode-description {
+        font-size: 0.85rem;
+        line-height: 1.4;
+        opacity: 0.9;
+    }
+    
+    .gamemode-buttons {
+        gap: 1rem;
+        flex-direction: column;
+        align-items: center;
+        flex-shrink: 0;
+    }
+    
+    .gamemode-buttons .neon-button {
+        width: 200px;
+        max-width: 80%;
+    }
+    
+    /* High Score Tabs - Mobile */
+    .gamemode-tabs {
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        padding: 0 10px;
+    }
+    
+    .tab-btn {
+        font-size: 0.9rem;
+        padding: 8px 16px;
+        flex: 1;
+        min-width: 80px;
+        text-align: center;
+    }
 }
 
 @media (max-width: 480px) {
@@ -1044,6 +1125,66 @@ body {
     .dropdown-selected {
         font-size: 0.8rem;
         padding: 10px 14px;
+    }
+    
+    /* Game Mode Cards - Small Mobile */
+    .gamemode-container {
+        padding: 0.5rem;
+        min-height: calc(100vh - 100px);
+    }
+    
+    .gamemode-container h2 {
+        font-size: 1.8rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .gamemode-grid {
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .gamemode-card {
+        padding: 1.2rem;
+        margin: 0 5px;
+        min-height: 140px;
+        border-radius: 12px;
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.4);
+    }
+    
+    .gamemode-icon {
+        font-size: 2rem;
+        margin-bottom: 0.6rem;
+    }
+    
+    .gamemode-title {
+        font-size: 1.1rem;
+        margin-bottom: 0.6rem;
+        letter-spacing: 0.05em;
+    }
+    
+    .gamemode-description {
+        font-size: 0.8rem;
+        line-height: 1.3;
+    }
+    
+    .gamemode-buttons .neon-button {
+        width: 180px;
+        font-size: 0.9rem;
+        padding: 10px 20px;
+    }
+    
+    /* High Score Tabs - Small Mobile */
+    .gamemode-tabs {
+        gap: 0.3rem;
+        margin-bottom: 1.5rem;
+        flex-direction: column;
+    }
+    
+    .tab-btn {
+        font-size: 0.8rem;
+        padding: 8px 12px;
+        letter-spacing: 0.05em;
+        width: 100%;
     }
     
     .dropdown-option {
@@ -1206,18 +1347,22 @@ body {
     backdrop-filter: blur(10px);
     position: relative;
     overflow: hidden;
+    transform: translateZ(0); /* Enable hardware acceleration */
+    -webkit-tap-highlight-color: transparent; /* Remove blue tap highlight on mobile */
 }
 
-.gamemode-card:hover {
+.gamemode-card:hover,
+.gamemode-card:active {
     border-color: var(--neon-pink);
     box-shadow: 0 0 30px var(--neon-pink);
-    transform: translateY(-5px);
+    transform: translateY(-5px) translateZ(0);
 }
 
 .gamemode-card.selected {
     border-color: var(--neon-yellow);
     box-shadow: 0 0 20px var(--neon-yellow);
     background: rgba(255, 190, 11, 0.1);
+    transform: translateY(-3px) translateZ(0);
 }
 
 .gamemode-icon {
@@ -1347,9 +1492,60 @@ body {
     }
 }
 
+/* Game mode card selection animation */
+@keyframes cardSelectPulse {
+    0% { transform: scale(1) translateY(-3px) translateZ(0); }
+    50% { transform: scale(1.02) translateY(-5px) translateZ(0); }
+    100% { transform: scale(1) translateY(-3px) translateZ(0); }
+}
+
+.gamemode-card.selected {
+    animation: cardSelectPulse 2s ease-in-out infinite;
+}
+
 /* Hidden utility class */
 .hidden {
     display: none !important;
+}
+
+/* Tablet and Large Mobile - Landscape Mode */
+@media (max-width: 1024px) and (min-width: 769px) {
+    .gamemode-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+        max-width: 800px;
+        margin: 0 auto 3rem auto;
+    }
+    
+    .gamemode-card {
+        min-height: 180px;
+        padding: 1.8rem;
+    }
+    
+    .gamemode-icon {
+        font-size: 2.8rem;
+    }
+    
+    .gamemode-title {
+        font-size: 1.4rem;
+    }
+    
+    .gamemode-description {
+        font-size: 0.85rem;
+    }
+}
+
+/* Enhanced touch feedback for all mobile devices */
+@media (hover: none) and (pointer: coarse) {
+    .gamemode-card:active {
+        transform: scale(0.98) translateY(-2px) translateZ(0);
+        transition: transform 0.1s ease;
+    }
+    
+    .gamemode-card:active .gamemode-icon {
+        transform: scale(1.1);
+        transition: transform 0.1s ease;
+    }
 }
 
 /* Reduce motion for accessibility */
