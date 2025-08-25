@@ -1,4 +1,18 @@
 /* Vaporwave Snake Game - CSS */
+
+/* Critical: Prevent white background flash on mobile/Netlify */
+html, body, #root, .screen {
+    background-color: #0f0514 !important;
+}
+
+/* Additional mobile background fix */
+@media screen and (max-width: 1024px) {
+    html, body {
+        background-color: #0f0514 !important;
+        background-image: linear-gradient(45deg, #0f0514, #0a0208) !important;
+    }
+}
+
 :root {
     --neon-pink: #ff006e;
     --neon-cyan: #00f5ff;
@@ -11,19 +25,34 @@
     --text-shadow: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 30px currentColor;
 }
 
+/* Ensure dark background on all elements to prevent white flash */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+html {
+    background-color: #0f0514 !important; /* Force dark background */
+    height: 100%;
+    -webkit-text-size-adjust: 100%; /* Prevent text scaling on iOS */
+    text-size-adjust: 100%; /* Standard property */
+}
+
 body {
     font-family: 'Orbitron', monospace;
-    background: linear-gradient(45deg, var(--dark-bg), var(--darker-bg));
+    background-color: #0f0514 !important; /* Fallback color with !important */
+    background: linear-gradient(45deg, var(--dark-bg), var(--darker-bg)) !important;
+    background-attachment: fixed; /* Ensure background stays fixed on mobile */
     color: var(--neon-cyan);
     overflow: hidden;
     height: 100vh;
+    min-height: 100vh;
     position: relative;
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 /* Animated Grid Background */
@@ -40,6 +69,7 @@ body {
     background-size: 50px 50px;
     animation: gridMove 20s linear infinite;
     z-index: -2;
+    pointer-events: none; /* Ensure it doesn't interfere with interactions */
 }
 
 @keyframes gridMove {
@@ -705,12 +735,21 @@ body {
 
 /* Mobile Layout Optimizations */
 @media (max-width: 768px) {
-    body {
+    /* Force dark background on all mobile devices */
+    html, body {
+        background-color: #0f0514 !important;
+        background: linear-gradient(45deg, var(--dark-bg), var(--darker-bg)) !important;
+        background-attachment: fixed !important;
         overflow-x: hidden;
+        overflow-y: auto;
         padding-top: 20px;
+        min-height: 100vh;
+        height: auto;
     }
     
+    /* Ensure main wrapper has dark background */
     .screen {
+        background-color: transparent !important;
         padding: 40px 20px 60px 20px;
     }
     
@@ -1027,6 +1066,23 @@ body {
 }
 
 @media (max-width: 480px) {
+    html, body {
+        background-color: #0f0514 !important;
+        background: linear-gradient(45deg, var(--dark-bg), var(--darker-bg)) !important;
+        background-attachment: fixed !important;
+    }
+    
+    /* Ensure background elements are visible on mobile */
+    .grid-background {
+        display: block !important;
+        opacity: 0.08 !important; /* Slightly reduce opacity on mobile for better performance */
+    }
+    
+    .stars {
+        display: block !important;
+        opacity: 0.8 !important;
+    }
+    
     .screen {
         padding: 30px 15px 80px 15px;
     }
