@@ -4,6 +4,12 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# Project analysis and planning documents
+PROJECT_UPGRADES.txt
+ANALYSIS.txt
+TODO.txt
+*.draft.txt
+
 # Runtime data
 pids
 *.pid
