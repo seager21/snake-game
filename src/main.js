@@ -5,6 +5,7 @@
  * that are called from the HTML onclick attributes.
  */
 
+import '../css/style.css';
 import { GameEngine } from './modules/GameEngine.js';
 
 // Global game instance
@@ -46,10 +47,15 @@ window.showHighScores = function() {
 }
 
 window.startGame = function() {
+    console.log('🎮 startGame() called');
+    console.log('   Game instance exists:', !!game);
     if (!game) {
+        console.log('   Creating new GameEngine...');
         game = new GameEngine();
     }
+    console.log('   Calling game.startGame()...');
     game.startGame();
+    console.log('   ✅ game.startGame() completed');
 }
 
 window.pauseGame = function() {

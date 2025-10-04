@@ -30,6 +30,7 @@ export class GameEngine {
         this.gameState = 'menu'; // menu, playing, paused, gameOver
         this.snake = [];
         this.food = {};
+        this.obstacles = [];
         this.score = 0;
         this.level = 1;
         this.selectedLevel = 1;
@@ -123,7 +124,10 @@ export class GameEngine {
     }
     
     selectColor(color) {
+        console.log('🎨 GameEngine.selectColor called with:', color);
+        console.log('   Previous color:', this.selectedColor);
         this.selectedColor = color;
+        console.log('   New selected color:', this.selectedColor);
         
         // Update traditional color buttons (if they exist)
         document.querySelectorAll('.color-btn').forEach(btn => {
@@ -143,13 +147,17 @@ export class GameEngine {
                 
                 // Update the dropdown display
                 const dropdownSelected = document.getElementById('color-selected');
-                const colorName = option.querySelector('span').textContent;
-                const colorPreview = option.querySelector('.color-preview').className;
-                
-                dropdownSelected.querySelector('span').textContent = colorName;
-                dropdownSelected.querySelector('.color-preview').className = colorPreview;
+                if (dropdownSelected) {
+                    const colorName = option.querySelector('span').textContent;
+                    const colorPreview = option.querySelector('.color-preview').className;
+                    
+                    dropdownSelected.querySelector('span').textContent = colorName;
+                    dropdownSelected.querySelector('.color-preview').className = colorPreview;
+                }
             }
         });
+        
+        console.log('   ✅ Color selection complete');
     }
     
     selectGameMode(mode) {
@@ -163,6 +171,11 @@ export class GameEngine {
     }
     
     startGame() {
+        console.log('🚀 GameEngine.startGame() called');
+        console.log('   Selected mode:', this.selectedGameMode);
+        console.log('   Selected level:', this.selectedLevel);
+        console.log('   Selected color:', this.selectedColor);
+        
         this.level = this.selectedLevel;
         this.gameState = 'playing';
         this.score = 0;
@@ -172,27 +185,33 @@ export class GameEngine {
         this.isPaused = false;
         this.changingDirection = false;
         
-        // Initialize mode-specific properties
-        this.gameModes.initMode(this.selectedGameMode);
-        
-        // Initialize snake
+        console.log('   Initializing snake...');
+        // Initialize snake FIRST (needed for obstacle generation)
         this.snake = [
             { x: 100, y: 100 },
             { x: 80, y: 100 },
             { x: 60, y: 100 }
         ];
         
+        console.log('   Initializing game mode...');
+        // Initialize mode-specific properties (this may generate obstacles)
+        this.gameModes.initMode(this.selectedGameMode);
+        
+        console.log('   Spawning food...');
         // Spawn first food
         this.spawnFood();
         
+        console.log('   Updating UI...');
         // Update UI
         this.showScreen('game-screen');
         this.updateScore();
         this.updateLevel();
         this.updateModeSpecificUI();
         
+        console.log('   Starting game loop...');
         // Start game loop
         this.gameLoop();
+        console.log('   ✅ GameEngine.startGame() complete');
     }
     
     updateModeSpecificUI() {

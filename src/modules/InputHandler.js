@@ -52,9 +52,11 @@ export class InputHandler {
             }
         });
 
-        // Mobile controls setup
+        // Mobile controls setup - always set up, not just on mobile
+        this.setupMobileControls();
+        
+        // Mobile-specific adjustments
         if (this.isMobile) {
-            this.setupMobileControls();
             this.adjustForMobile();
         }
     }
@@ -67,18 +69,28 @@ export class InputHandler {
         const dropdownOptions = document.getElementById('color-options');
         const options = document.querySelectorAll('.dropdown-option');
 
-        if (!dropdownSelected || !dropdownOptions) return;
+        console.log('🎨 Setting up color dropdown...');
+        console.log('   Dropdown selected element:', dropdownSelected);
+        console.log('   Dropdown options element:', dropdownOptions);
+        console.log('   Found options:', options.length);
+
+        if (!dropdownSelected || !dropdownOptions) {
+            console.log('   ⚠️ Missing dropdown elements!');
+            return;
+        }
 
         // Toggle dropdown
         dropdownSelected.addEventListener('click', (e) => {
+            console.log('🖱️ Dropdown clicked');
             e.stopPropagation();
             dropdownSelected.classList.toggle('open');
             dropdownOptions.classList.toggle('open');
         });
 
         // Select option
-        options.forEach(option => {
+        options.forEach((option, index) => {
             option.addEventListener('click', (e) => {
+                console.log(`🎨 Color option clicked: ${option.dataset.color}`);
                 e.stopPropagation();
                 const color = option.dataset.color;
                 const colorName = option.querySelector('span').textContent;
@@ -97,6 +109,7 @@ export class InputHandler {
                 dropdownOptions.classList.remove('open');
 
                 // Update game color
+                console.log(`   Updating game engine color to: ${color}`);
                 this.gameEngine.selectColor(color);
             });
         });
@@ -114,6 +127,8 @@ export class InputHandler {
                 dropdownOptions.classList.remove('open');
             }
         });
+        
+        console.log('   ✅ Color dropdown setup complete');
     }
 
     /**
@@ -222,15 +237,24 @@ export class InputHandler {
      * Setup mobile touch controls
      */
     setupMobileControls() {
+        const dirButtons = document.querySelectorAll('.dir-btn[data-direction]');
+        console.log('📱 Setting up mobile controls, found buttons:', dirButtons.length);
+        
         // Directional buttons only
-        document.querySelectorAll('.dir-btn[data-direction]').forEach(btn => {
+        dirButtons.forEach((btn, index) => {
+            console.log(`   Button ${index}:`, btn.dataset.direction);
+            
             // Remove any existing event listeners by cloning the node
             const newBtn = btn.cloneNode(true);
             btn.parentNode.replaceChild(newBtn, btn);
 
             newBtn.addEventListener('touchstart', (e) => {
+                console.log('👆 Touch detected on:', newBtn.dataset.direction);
                 e.preventDefault();
-                if (this.gameEngine.gameState !== 'playing') return;
+                if (this.gameEngine.gameState !== 'playing') {
+                    console.log('   Game not playing, ignoring');
+                    return;
+                }
 
                 const direction = newBtn.dataset.direction;
                 this.handleMobileDirection(direction);
@@ -249,13 +273,19 @@ export class InputHandler {
 
             // Also handle click for testing on desktop
             newBtn.addEventListener('click', (e) => {
+                console.log('🖱️ Click detected on:', newBtn.dataset.direction);
                 e.preventDefault();
-                if (this.gameEngine.gameState !== 'playing') return;
+                if (this.gameEngine.gameState !== 'playing') {
+                    console.log('   Game not playing, ignoring');
+                    return;
+                }
 
                 const direction = newBtn.dataset.direction;
                 this.handleMobileDirection(direction);
             });
         });
+        
+        console.log('✅ Mobile controls setup complete');
     }
 
     /**

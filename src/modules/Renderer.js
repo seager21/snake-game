@@ -162,8 +162,25 @@ export class Renderer {
     /**
      * Draw obstacles
      * @param {Array} obstacles - Array of obstacle positions
+     * @param {string} gameMode - Current game mode
      */
-    drawObstacles(obstacles) {
+    drawObstacles(obstacles, gameMode) {
+        // Only draw if in obstacle mode and obstacles exist
+        if (gameMode !== 'obstacle') {
+            return;
+        }
+        
+        if (!obstacles || !Array.isArray(obstacles)) {
+            console.log('⚠️ drawObstacles called but obstacles is invalid:', obstacles);
+            return;
+        }
+        
+        if (obstacles.length === 0) {
+            console.log('⚠️ drawObstacles called but obstacles array is empty');
+            return;
+        }
+
+        console.log('🎨 Drawing obstacles:', obstacles.length);
         obstacles.forEach(obstacle => {
             this.ctx.save();
             this.ctx.shadowBlur = 15;

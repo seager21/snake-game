@@ -48,9 +48,11 @@ export class GameModes {
      * Initialize obstacle mode
      */
     initObstacle() {
+        console.log('🧱 Initializing obstacle mode...');
         this.generateObstacles();
         document.getElementById('timer-display')?.classList.add('hidden');
         this.clearTimer();
+        console.log('   Generated obstacles:', this.gameEngine.obstacles?.length || 0);
     }
 
     /**
@@ -151,7 +153,15 @@ export class GameModes {
      * Generate random obstacles for obstacle mode
      */
     generateObstacles() {
+        console.log('🔧 Generating obstacles...');
+        console.log('   Canvas size:', this.gameEngine.canvasSize);
+        console.log('   Grid size:', this.gameEngine.gridSize);
+        console.log('   Snake positions:', this.gameEngine.snake);
+        
         const numObstacles = Math.floor(Math.random() * 8) + 5; // 5-12 obstacles
+        console.log('   Target number of obstacles:', numObstacles);
+        
+        this.obstacles = []; // Store in GameModes first
         this.gameEngine.obstacles = [];
 
         for (let i = 0; i < numObstacles; i++) {
@@ -180,12 +190,22 @@ export class GameModes {
 
                 if (!conflictsWithSnake && !conflictsWithObstacles && !tooCloseToStart) {
                     validPosition = true;
-                    this.gameEngine.obstacles.push({ x: obstacleX, y: obstacleY });
+                    const obstacle = { x: obstacleX, y: obstacleY };
+                    this.obstacles.push(obstacle);
+                    this.gameEngine.obstacles.push(obstacle);
+                    console.log(`   ✓ Obstacle ${i + 1} placed at (${obstacleX}, ${obstacleY})`);
                 }
 
                 attempts++;
             }
+            
+            if (attempts >= 50) {
+                console.log(`   ⚠️ Could not place obstacle ${i + 1} after 50 attempts`);
+            }
         }
+        
+        console.log('   Final obstacles array:', this.gameEngine.obstacles);
+        console.log('   Total obstacles placed:', this.gameEngine.obstacles.length);
     }
 
     /**

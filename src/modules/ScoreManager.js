@@ -94,4 +94,17 @@ export class ScoreManager {
             this.resetHighScore(mode);
         });
     }
+
+    /**
+     * Update personal best display in the UI for all game modes
+     */
+    updatePersonalBest() {
+        // Update personal best for all game modes
+        Object.keys(this.highScores).forEach(mode => {
+            const scoreElement = document.getElementById(`personal-best-score-${mode}`);
+            if (scoreElement) {
+                scoreElement.textContent = this.highScores[mode] || 0;
+            }
+        });
+    }
 }
